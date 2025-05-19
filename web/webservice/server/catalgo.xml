@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <configuration
+ xmlns="http://web/webservice/server/config/config.xml">
+ <db name="Catalogo"
+ location="http://web/webservice/server\catalgo.xml"
+ packageName="it.ow.softech.serviceWSDL"/>
+ </configuration>

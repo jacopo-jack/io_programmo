@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Da flash a javascript</title>
+    <style>
+        #container{
+            /*width: 500px;
+            height: 500px;*/
+            background-color: black;
+            text-align: center;
+        }
+        #canvas{
+            /* per la posizione della pallina */
+            /*padding-left: 200px;*/
+            padding-right: 200px;
+            /*per la dimensione del canvas che di default è 350x100*/
+            height:50px;
+            width: 100px;
+            
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <main>
+            <div id="header">
+                <a href="https://en.wikibooks.org/wiki/ActionScript_Programming/PartI/Chapter_1">Guida</a>
+            </div>
+            <div id="body">
+             <div id="container">
+                <section>
+                    <p id="header">Proprietà</p>
+                    <!--descrizione-->
+                    <!--canvas-->
+                    <canvas id="canvas">
+                    </div>
+                    
+                    <script>
+                        const canvas= document.getElementById("canvas");
+                        const ctx = canvas.getContext("2d");
+                        ctx.beginPath();
+                        ctx.arc(95, 50, 40, 0, 2 * Math.PI);
+                        ctx.fillStyle = "red";
+                        ctx.fill();
+                        ctx.stroke();
+                    </script>
+                    <!--bottoni-->
+                    <div id="controller">
+                    <button onclick="hidden_ball()">Nascondi Pallina</button>
+                    <button onclick="show_ball()">Mostra Pallina</button>
+                    <button onclick="ball_rotate()">Ruota Pallina</button>
+                    </div>
+                    <script>
+                        function hidden_ball(){
+                            const ball= document.getElementById("canvas");
+                            ball.style.display = "none";
+                        }
+                        function show_ball(){
+                            const show_ball = document.getElementById("canvas");
+                            show_ball.style.display = "block";
+                        }
+                        function ball_rotate(){
+                            const ball_rotate = document.getElementById("canvas");
+                            let pos_x = 0;
+                            let pos_y = 0;
+                            let ball_x = 200;  
+                            let ball_y = 200;  
+                            id = setInterval(frame, 5);
+                            function frame(){
+                                if(pos_x == pos_y){
+                                    //clearInterval(id);
+                                    ball_x++;
+                                    ball_y++;
+                                }else{
+                                    pos_x++;
+                                    pos_y++;
+                                }
+                            }
+
+                        }
+                    </script>
+                    </canvas>
+                    <br>
+                    <pre>
+                     <code>
+                        const canvas= document.getElementById("canvas");
+                        const ctx = canvas.getContext("2d");
+                        ctx.beginPath();
+                        ctx.arc(95, 50, 40, 0, 2 * Math.PI);
+                        const ball_x = 200;
+                        const ball_y = 200;
+                        ctx.fillStyle = "red";
+                        ctx.stroke();
+                     </code>
+                    </pre>
+                </section>
+            </div>
+        </main>
+    </section>
+</body>
+</html>

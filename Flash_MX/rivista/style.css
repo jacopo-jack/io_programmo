@@ -1,0 +1,26 @@
+*{
+    text-align: center;
+     @media screen {
+        min-width:650px;
+        min-width:465px; 
+    }
+}
+a{
+    text-align: center;
+    text-decoration: none;
+}
+#simple_connection{
+    margin-top: 10%;
+    margin-left: 10%;
+    margin-bottom: 10%;
+}
+picture,img{
+    margin-top: 10%;
+    margin-bottom: 10%;
+    width: max-content;
+    height: max-content;
+    @media screen {
+        min-width:650px;
+        min-width:465px; 
+    }
+}
