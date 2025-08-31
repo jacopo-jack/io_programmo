@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Online</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> 
+    <style>
+        /* Variabili CSS per facilitare la personalizzazione */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-color: #e9ecef;
+            --card-background: #ffffff;
+            --text-color: #343a40;
+            --border-color: #dee2e6;
+            --shadow-light: rgba(0, 0, 0, 0.1);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: var(--card-background);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px var(--shadow-medium);
+            max-width: 960px; /* Larghezza massima per il contenitore */
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-size: 2.2em;
+            text-shadow: 1px 1px 2px var(--shadow-light);
+        }
+
+        .video-player-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* Rapporto 16:9 per il video */
+            height: 0;
+            overflow: hidden;
+            background-color: #000;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 8px var(--shadow-light);
+            /* *** INIZIALMENTE NASCOSTO *** */
+            display: none; 
+        }
+
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block; /* Rimuove lo spazio extra sotto l'elemento video */
+        }
+
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px; /* Maggiore spazio tra i bottoni */
+        }
+
+        .channel-button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px; 
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 4px var(--shadow-light);
+            min-width: 120px; /* Larghezza minima per i bottoni */
+        }
+
+        .channel-button:hover {
+            background-color: #0056b3; /* Tonalità più scura all'hover */
+            transform: translateY(-2px); /* Effetto leggero di sollevamento */
+            box-shadow: 0 4px 8px var(--shadow-medium);
+        }
+
+        .channel-button:active {
+            background-color: #004085; /* Colore al click */
+            transform: translateY(0);
+            box-shadow: 0 2px 4px var(--shadow-light);
+        }
+
+        .info {
+            margin-top: 30px;
+            font-size: 0.95em;
+            color: var(--secondary-color);
+            line-height: 1.6;
+        }
+
+        /* Stile per un footer semplice */
+        .footer {
+            margin-top: 40px;
+            font-size: 0.8em;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+
+        /* Media Queries per adattamento su schermi più piccoli */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .channel-button {
+                padding: 10px 20px;
+                font-size: 1em;
+                min-width: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 15px;
+                border-radius: 8px;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            .controls {
+                gap: 10px;
+            }
+            .channel-button {
+                width: calc(50% - 10px); /* Due bottoni per riga */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>La Mia TV Online: Canale <span id="currentChannelName">[Nome Canale]</span></h1>
+        
+        <div class="video-player-wrapper" id="videoPlayerWrapper">
+            <video id="videoPlayer" controls>
+                Il tuo browser non supporta il tag video.
+            </video>
+        </div>
+
+        <div class="controls">
+            <button class="channel-button" id="btnRai1">Rai 1</button>
+            <button class="channel-button" id="btnRai2">Rai 2</button>
+            <button class="channel-button" id="btnRai3">Rai 3</button>
+            <button class="channel-button" id="btnCanale4">Canale 4 (Locale)</button>
+        </div>
+
+        <p class="info">
+            La logica per mostrare/nascondere il video player e avviare gli stream
+            dovrà essere implementata tramite JavaScript (in questo blocco) o dal
+            tuo wrapper VB.NET.
+        </p>
+    </div>
+
+    <div class="footer">
+        &copy; 2025 La Mia TV Online. Tutti i diritti riservati.
+    </div>
+
+    <script>
+        // Funzione per nascondere il video player
+        function nascondiVideoPlayer() {
+            const wrapper = document.getElementById('videoPlayerWrapper');
+            if (wrapper) {
+                wrapper.style.display = 'none';
+                console.log('Video player nascosto.');
+            }
+        }
+
+        // Funzione per mostrare il video player
+        function mostraVideoPlayer() {
+            const wrapper = document.getElementById('videoPlayerWrapper');
+            if (wrapper) {
+                wrapper.style.display = 'block'; 
+                console.log('Video player mostrato.');
+            }
+        }
+
+        /**
+         * Funzione 'encoder' personalizzata per determinare il tipo di stream
+         * basandosi sull'URL.
+         */
+        function encoder(url) {
+            // Nota: Le URL Rai dirette sono HLS, ma potrebbero non includere ".m3u8"
+            // nella stringa URL visibile, e sono protette da DRM/CORS.
+            // Questa funzione si basa sulle estensioni finali.
+            if (url.includes('.mp4')) {
+                return 'mp4';
+            } else if (url.includes('.m3u8') || url.includes('raiplay.it/dirette')) {
+                // Ho aggiunto 'raiplay.it/dirette' per forzare Rai ad HLS/gestione specifica
+                // Sapendo che è quasi sempre HLS
+                return 'hls';
+            } else if (url.includes('.mpd')) {
+                return 'dash';
+            } else {
+                // Se non rientra nei tipi noti, prova comunque a trattarlo come HLS
+                // perché molti stream live sono HLS o DASH.
+                return 'unknown'; 
+            }
+        }
+
+        // Funzione per impostare la sorgente del video
+        function impostaSorgenteVideo(urlVideo, nomeCanale) {
+            const videoPlayer = document.getElementById('videoPlayer');
+            const currentChannelNameSpan = document.getElementById('currentChannelName');
+
+            if (!videoPlayer) {
+                console.error('Video player non trovato.');
+                return;
+            }
+
+            // Ferma la riproduzione corrente e svuota la sorgente
+            videoPlayer.pause();
+            videoPlayer.removeAttribute('src'); 
+            videoPlayer.load(); // Serve per resettare il player
+
+            // *** LA TUA LOGICA QUI: Utilizza la funzione encoder per determinare il tipo ***
+            const type = encoder(urlVideo);
+            console.log(`URL: ${urlVideo}, Tipo di stream rilevato da encoder(): ${type}`);
+
+            if (type === 'mp4' || type === 'dash') {
+                // Se il tipo è MP4 o DASH (trattiamo DASH nativamente qui)
+                console.log('Tentativo di caricare video nativamente (MP4 o DASH).');
+                videoPlayer.src = urlVideo;
+                videoPlayer.load();
+                videoPlayer.play();
+            } else if (type === 'hls' || type === 'unknown') {
+                // Se il tipo è HLS o "unknown" (che potremmo voler provare come HLS per default)
+                if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+                    console.log('Tentativo di caricare HLS con hls.js.');
+                    // Distruggi qualsiasi istanza Hls precedente per evitare conflitti
+                    if (videoPlayer.hlsInstance) {
+                        videoPlayer.hlsInstance.destroy();
+                    }
+                    const hls = new Hls();
+                    hls.loadSource(urlVideo);
+                    hls.attachMedia(videoPlayer);
+                    hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                        videoPlayer.play();
+                    });
+                    videoPlayer.hlsInstance = hls; // Salva l'istanza per future distruzioni
+                    
+                    // Gestione errori HLS
+                    hls.on(Hls.Events.ERROR, function (event, data) {
+                        let errorType = data.type;
+                        let errorFatal = data.fatal;
+                        console.error(`Errore HLS: Tipo=${errorType}, Fatale=${errorFatal}`, data);
+                        if (errorFatal) {
+                            switch(errorType) {
+                                case Hls.ErrorTypes.NETWORK_ERROR:
+                                    console.error("Errore di rete HLS, riprovo...");
+                                    hls.startLoad();
+                                    break;
+                                case Hls.ErrorTypes.MEDIA_ERROR:
+                                    console.error("Errore media HLS, ripristino...");
+                                    hls.recoverMediaError();
+                                    break;
+                                default:
+                                    console.error("Errore HLS non recuperabile, distruggo l'istanza.");
+                                    hls.destroy();
+                                    break;
+                            }
+                        }
+                    });
+
+                } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl') || videoPlayer.canPlayType('application/x-mpegURL')) {
+                    // Per browser/WebView2 che supportano HLS nativamente
+                    console.log('Tentativo di caricare HLS nativamente.');
+                    videoPlayer.src = urlVideo;
+                    videoPlayer.load();
+                    videoPlayer.play();
+                } else {
+                    console.error('Browser non supporta HLS e hls.js non è disponibile o non supportato.');
+                    alert('Questo tipo di stream (HLS) non è supportato dal tuo browser. Prova un browser più moderno o includi la libreria hls.js.');
+                }
+            } else {
+                console.error('Tipo di stream non riconosciuto o non gestito: ' + type);
+                alert('Impossibile caricare il video. Formato non supportato o URL non valido.');
+            }
+
+            if (currentChannelNameSpan) {
+                currentChannelNameSpan.textContent = nomeCanale;
+            }
+            console.log(`Caricato: ${nomeCanale} da ${urlVideo}`);
+            mostraVideoPlayer(); // Mostra il player non appena il video è impostato
+        }
+        
+        // --- LOGICA DI INIZIALIZZAZIONE E TEST (MODIFICA PER IL TUO FLUSSO VB.NET) ---
+        
+        document.addEventListener('DOMContentLoaded', (event) => {
+            nascondiVideoPlayer(); // Nascondi il player all'avvio della pagina HTML
+        });
+
+        // Esempio: gestisci il click di un bottone per mostrare il player e caricare un video
+        // (Queste righe sono solo per dimostrazione, la tua logica principale sarà in VB.NET)
+        document.getElementById('btnRai1').addEventListener('click', () => {
+            // URL Rai. Le dirette RaiPlay sono protette da DRM/CORS.
+            impostaSorgenteVideo('https://www.raiplay.it/dirette/rai1', 'Rai 1 (Diretta Rai)'); 
+        });
+
+        document.getElementById('btnRai2').addEventListener('click', () => {
+             // URL Rai. Le dirette RaiPlay sono protette da DRM/CORS.
+             impostaSorgenteVideo('https://www.raiplay.it/dirette/rai2', 'Rai 2 (Diretta Rai)');
+        });
+        
+        document.getElementById('btnRai3').addEventListener('click', () => {
+            // URL Rai. Le dirette RaiPlay sono protette da DRM/CORS.
+            impostaSorgenteVideo('https://www.raiplay.it/dirette/rai3', 'Rai 3 (Diretta Rai)');
+        });
+        
+        document.getElementById('btnCanale4').addEventListener('click', () => {
+            // Esempio con un video locale MP4 (assicurati che il file 'video/canale4.mp4' esista nella stessa directory!)
+            impostaSorgenteVideo('https://mediasetinfinity.mediaset.it/video/battitilive2025/il-backstage-della-prima-puntata_FD00000000487266', 'Canale 4 (Video Locale)');
+        });
+
+    </script>
+</body>
+</html>

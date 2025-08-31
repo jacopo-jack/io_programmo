@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mail Validator</title>
+</head>
+<body>
+    <main>
+        <section>
+             <div>
+                <input type="email" name="Mail" id="email_checker">
+                <input type="button" value="valida_mail" onclick="isMail()">
+             </div>
+             <div id="result">
+                <p id="result"></p> 
+             </div>
+        </section>
+    </main>
+    <script>
+        function isMail(){
+            // prima variabile un array per le regular expression
+            // @ come costante e altro array per altre regex
+            // seguire qui: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
+            let left_regex = ["a-z","."];
+            const separator= "@";
+            let right_regex = [".","a-z","2-4","$"];
+            // una mail per esempio
+            let example = "example@mail.com";
+            let pattern = left_regex+ separator + right_regex;
+            const sMail = document.getElementById('email_checker').value;
+            const isMailValid = pattern.test(pattern); 
+        }
+    </script>
+</body>
+</html>

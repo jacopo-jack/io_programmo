@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="class.json" type=" application/json"></script>
+    <title>Classi_json</title>
+</head>
+<body>
+    <header>
+        ...
+        </header>
+        
+        <section>
+        ...
+        </section>
+        
+        <script>
+        //per visualizzare la classe ci vuole una funzioe asincrona
+        async function populate() {
+                const requestURL = "class.json";
+                const request = new Request(requestURL);
+                const response = await fetch(request);
+                const superHeroes = await response.json();
+                populateHeader(superHeroes);
+                populateHeroes(superHeroes);
+}
+            console.log(populate());
+        </script>
+        
+</body>
+</html>
